@@ -2,7 +2,6 @@ import React from 'react'
 import Components from '../components/components.js'
 import SbEditable from 'storyblok-react'
 import config from '../../gatsby-config'
-import Navi from '../components/navi.js'
 
 const loadStoryblokBridge = function(cb) {
   let sbConfigs = config.plugins.filter((item) => {
@@ -36,7 +35,7 @@ const getParam = function(val) {
 class StoryblokEntry extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {story: null, globalNavi: {content: {}}}
+    this.state = {story: null}
   }
 
   componentDidMount() {
@@ -45,21 +44,10 @@ class StoryblokEntry extends React.Component {
 
   loadStory(payload) {
     window.storyblok.get({
-      slug: getParam('path'), 
+      slug: getParam('path'),
       version: 'draft'
     }, (data) => {
       this.setState({story: data.story})
-      this.loadGlovalNavi(data.story.lang)
-    })
-  }
-
-  loadGlovalNavi(lang) {
-    const language = lang === 'default' ? '' : lang + '/'
-    window.storyblok.get({
-      slug: `${language}global-navi`, 
-      version: 'draft'
-    }, (data) => {
-      this.setState({globalNavi: data.story})
     })
   }
 
@@ -92,12 +80,10 @@ class StoryblokEntry extends React.Component {
     }
 
     let content = this.state.story.content
-    let globalNavi = this.state.globalNavi.content
 
     return (
       <SbEditable content={content}>
       <div>
-        <Navi blok={globalNavi}></Navi>
         {Components[content.component] ? React.createElement(Components[content.component], {key: content._uid, blok: content}) : `Component ${content.component} not created yet`}
       </div>
       </SbEditable>
