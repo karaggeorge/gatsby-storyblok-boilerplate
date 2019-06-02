@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "react-next-boilerplate",
+  "name": "react-gatsby-boilerplate",
   "builds": [
     {
       "src": "package.json",
